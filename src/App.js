@@ -327,10 +327,9 @@ useEffect(() => {
 
   useEffect(() => {
     const updateCellSize = () => {
-      const min = Math.min(window.innerWidth, window.innerHeight);
-      // Limita el tamaño máximo del tablero a 480px
-      const maxBoardSize = Math.min(min - 48, 480);
-      const newCellSize = Math.floor(maxBoardSize / GRID_SIZE);
+      // El área máxima debe ser igual al tamaño máximo que quieres para el tablero
+      const maxBoardPx = 360; // O el valor que prefieras
+      const newCellSize = Math.floor(maxBoardPx / GRID_SIZE);
       setCellSize(Math.max(12, Math.min(newCellSize, 32)));
     };
     updateCellSize();
@@ -411,13 +410,17 @@ useEffect(() => {
           className="relative focus:outline-none overflow-hidden touch-none mx-auto"
           style={{
             touchAction: 'none',
-            width: '100%',
-            maxWidth: 360, // Cambia aquí (prueba 340, 360, 380)
-            maxHeight: '70vw',
-            aspectRatio: '1/1',
             background: '#222',
             borderRadius: 16,
             margin: '0 auto',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: 0,
+            width: cellSize * GRID_SIZE,
+            height: cellSize * GRID_SIZE,
+            border: currentTheme.boardBorder,
+            overflow: 'hidden',
           }}
           onTouchStart={handleTouchStart}
           onTouchMove={handleTouchMove}
@@ -431,11 +434,6 @@ useEffect(() => {
             snakeColor={currentTheme.snakeColor}
             foodColors={FOOD_TYPES}
           />
-          {isPaused && (
-            <div className={`absolute inset-0 flex items-center justify-center rounded-xl ${currentTheme.pauseBg}`}>
-              <p className={`text-3xl font-bold animate-pulse ${currentTheme.pauseText}`}>PAUSA</p>
-            </div>
-          )}
         </div>
         {gameOver ? (
           <div className="mt-8 text-center">

@@ -3,8 +3,16 @@ import React from 'react';
 const GameBoard = ({ board = [], gridSize = 20, cellSize = 20, boardBorder = 'border-gray-300', boardBg = 'bg-gray-50', snakeColor = 'bg-green-500', foodColors = {} }) => {
   return (
     <div
-      className={`relative border-2 rounded-xl overflow-hidden shadow-inner ${boardBorder} ${boardBg}`}
-      style={{ width: gridSize * cellSize, height: gridSize * cellSize }}
+      className="relative"
+      style={{
+        width: cellSize * gridSize,
+        height: cellSize * gridSize,
+        background: boardBg,
+        border: boardBorder,
+        borderRadius: 16,
+        position: 'relative',
+        overflow: 'hidden',
+      }}
     >
       {board.map((row, rowIndex) => (
         row.map((cell, colIndex) => {
