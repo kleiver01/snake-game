@@ -329,10 +329,10 @@ useEffect(() => {
     // Ajusta el tamaño de celda según el ancho de la pantalla
     const updateCellSize = () => {
       const min = Math.min(window.innerWidth, window.innerHeight);
-      // Deja un margen y calcula el tamaño máximo posible
-      const maxBoardSize = min - 48; // 24px de margen a cada lado
+      // Limita el tamaño máximo del tablero a 640px (por ejemplo)
+      const maxBoardSize = Math.min(min - 48, 640);
       const newCellSize = Math.floor(maxBoardSize / GRID_SIZE);
-      setCellSize(Math.max(12, Math.min(newCellSize, 32))); // mínimo 12px, máximo 32px
+      setCellSize(Math.max(12, Math.min(newCellSize, 32)));
     };
     updateCellSize();
     window.addEventListener('resize', updateCellSize);
@@ -341,7 +341,8 @@ useEffect(() => {
 
   return (
     <div className={`min-h-screen flex items-center justify-center p-4 ${currentTheme.bg} transition-colors duration-300`}>
-      <div className={`p-8 rounded-2xl shadow-2xl border ${currentTheme.cardBg} ${currentTheme.boardBorder} flex flex-col items-center w-full max-w-md`}>
+      <div className={`p-2 sm:p-8 rounded-2xl shadow-2xl border ${currentTheme.cardBg} ${currentTheme.boardBorder} flex flex-col items-center w-full`}
+     style={{ maxWidth: '100vw', boxSizing: 'border-box' }}>
         <div className="w-full flex justify-between items-center mb-4">
           <button
             onClick={toggleTheme}
@@ -401,8 +402,8 @@ useEffect(() => {
         <div
           ref={gameAreaRef}
           tabIndex="0"
-          className="relative focus:outline-none overflow-hidden touch-none"
-          style={{ touchAction: 'none' }}
+          className="relative focus:outline-none overflow-hidden touch-none mx-auto"
+          style={{ touchAction: 'none', maxWidth: '100vw', maxHeight: '70vh' }}
           onTouchStart={handleTouchStart}
           onTouchMove={handleTouchMove}
         >
