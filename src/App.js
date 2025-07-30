@@ -326,11 +326,10 @@ useEffect(() => {
   }, [gameOver, isMuted, playSound]);
 
   useEffect(() => {
-    // Ajusta el tamaño de celda según el ancho de la pantalla
     const updateCellSize = () => {
       const min = Math.min(window.innerWidth, window.innerHeight);
-      // Limita el tamaño máximo del tablero a 640px (por ejemplo)
-      const maxBoardSize = Math.min(min - 48, 640);
+      // Limita el tamaño máximo del tablero a 480px
+      const maxBoardSize = Math.min(min - 48, 480);
       const newCellSize = Math.floor(maxBoardSize / GRID_SIZE);
       setCellSize(Math.max(12, Math.min(newCellSize, 32)));
     };
@@ -341,8 +340,15 @@ useEffect(() => {
 
   return (
     <div className={`min-h-screen flex items-center justify-center p-4 ${currentTheme.bg} transition-colors duration-300`}>
-      <div className={`p-2 sm:p-8 rounded-2xl shadow-2xl border ${currentTheme.cardBg} ${currentTheme.boardBorder} flex flex-col items-center w-full`}
-     style={{ maxWidth: '100vw', boxSizing: 'border-box' }}>
+      <div
+        className={`p-4 sm:p-8 rounded-3xl shadow-2xl border-8 border-gray-700 flex flex-col items-center bg-gray-200`}
+        style={{
+          maxWidth: 440, // Cambia aquí (prueba 420, 440, 460 o 480)
+          width: '100%',
+          boxSizing: 'border-box',
+          background: '#e5e7eb',
+        }}
+      >
         <div className="w-full flex justify-between items-center mb-4">
           <button
             onClick={toggleTheme}
@@ -403,7 +409,16 @@ useEffect(() => {
           ref={gameAreaRef}
           tabIndex="0"
           className="relative focus:outline-none overflow-hidden touch-none mx-auto"
-          style={{ touchAction: 'none', maxWidth: '100vw', maxHeight: '70vh' }}
+          style={{
+            touchAction: 'none',
+            width: '100%',
+            maxWidth: 360, // Cambia aquí (prueba 340, 360, 380)
+            maxHeight: '70vw',
+            aspectRatio: '1/1',
+            background: '#222',
+            borderRadius: 16,
+            margin: '0 auto',
+          }}
           onTouchStart={handleTouchStart}
           onTouchMove={handleTouchMove}
         >
