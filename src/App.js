@@ -32,6 +32,7 @@ const App = () => {
   const [theme, setTheme] = useState('light');
   const [isMuted, setIsMuted] = useState(false);
   const [difficulty, setDifficulty] = useState('medium');
+  const [cellSize, setCellSize] = useState(CELL_SIZE);
 
   const gameAreaRef = useRef(null);
   const lastDirection = useRef(direction);
@@ -324,6 +325,20 @@ useEffect(() => {
     prevGameOver.current = gameOver;
   }, [gameOver, isMuted, playSound]);
 
+  useEffect(() => {
+    // Ajusta el tamaño de celda según el ancho de la pantalla
+    const updateCellSize = () => {
+      const min = Math.min(window.innerWidth, window.innerHeight);
+      // Deja un margen y calcula el tamaño máximo posible
+      const maxBoardSize = min - 48; // 24px de margen a cada lado
+      const newCellSize = Math.floor(maxBoardSize / GRID_SIZE);
+      setCellSize(Math.max(12, Math.min(newCellSize, 32))); // mínimo 12px, máximo 32px
+    };
+    updateCellSize();
+    window.addEventListener('resize', updateCellSize);
+    return () => window.removeEventListener('resize', updateCellSize);
+  }, []);
+
   return (
     <div className={`min-h-screen flex items-center justify-center p-4 ${currentTheme.bg} transition-colors duration-300`}>
       <div className={`p-8 rounded-2xl shadow-2xl border ${currentTheme.cardBg} ${currentTheme.boardBorder} flex flex-col items-center w-full max-w-md`}>
@@ -386,12 +401,17 @@ useEffect(() => {
         <div
           ref={gameAreaRef}
           tabIndex="0"
-          className="relative focus:outline-none"
+          className="relative focus:outline-none overflow-hidden touch-none"
+          style={{ touchAction: 'none' }}
           onTouchStart={handleTouchStart}
           onTouchMove={handleTouchMove}
         >
-          <GameBoard board={renderBoard()} gridSize={GRID_SIZE} cellSize={CELL_SIZE}
-            boardBorder={currentTheme.boardBorder} boardBg={currentTheme.boardBg}
+          <GameBoard
+            board={renderBoard()}
+            gridSize={GRID_SIZE}
+            cellSize={cellSize}
+            boardBorder={currentTheme.boardBorder}
+            boardBg={currentTheme.boardBg}
             snakeColor={currentTheme.snakeColor}
             foodColors={FOOD_TYPES}
           />

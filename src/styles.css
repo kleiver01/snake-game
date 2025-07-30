@@ -2,8 +2,3 @@
 @tailwind components;
 @tailwind utilities;
 
-body, html {
-  overflow: hidden;
-  touch-action: none;
-  overscroll-behavior: contain;
-}
