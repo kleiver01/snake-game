@@ -123,11 +123,13 @@ const App = () => {
   const touchStartY = useRef(0);
 
   const handleTouchStart = (e) => {
+    e.preventDefault(); // <-- Agrega esto
     touchStartX.current = e.touches[0].clientX;
     touchStartY.current = e.touches[0].clientY;
   };
 
   const handleTouchMove = (e) => {
+    e.preventDefault(); // <-- Agrega esto
     if (isPaused || gameOver) return;
     if (!touchStartX.current || !touchStartY.current) return;
 
