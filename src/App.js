@@ -407,7 +407,7 @@ useEffect(() => {
         <div
           ref={gameAreaRef}
           tabIndex="0"
-          className="relative focus:outline-none overflow-hidden touch-none mx-auto"
+          className="relative focus:outline-none overflow-hidden touch-none mx-auto w-full"
           style={{
             touchAction: 'none',
             background: '#222',
@@ -417,12 +417,12 @@ useEffect(() => {
             alignItems: 'center',
             justifyContent: 'center',
             padding: 0,
-            width: cellSize * GRID_SIZE,
-            height: cellSize * GRID_SIZE,
+            aspectRatio: '1/1', // Hace el cuadro siempre cuadrado
+            maxWidth: '100vw',  // Nunca más ancho que la pantalla
+            maxHeight: '80vw',  // Opcional: limita el alto en móvil
             border: currentTheme.boardBorder,
             overflow: 'hidden',
-            maxWidth: '100vw',           
-            boxSizing: 'border-box',     
+            boxSizing: 'border-box',
           }}
           onTouchStart={handleTouchStart}
           onTouchMove={handleTouchMove}
