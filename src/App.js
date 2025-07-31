@@ -327,15 +327,9 @@ useEffect(() => {
 
   useEffect(() => {
     const updateCellSize = () => {
-      // Usa el ancho real del contenedor padre
-      const boardContainer = gameAreaRef.current;
-      let boardPx = 360;
-      if (boardContainer) {
-        boardPx = boardContainer.offsetWidth;
-      } else {
-        boardPx = Math.min(window.innerWidth, 360);
-      }
-      const newCellSize = Math.floor(boardPx / GRID_SIZE);
+      // El ancho máximo disponible
+      const maxBoardPx = Math.min(window.innerWidth, 440) - 32; // 440 = maxWidth del contenedor, 32 = padding
+      const newCellSize = Math.floor(maxBoardPx / GRID_SIZE);
       setCellSize(Math.max(12, Math.min(newCellSize, 32)));
     };
     updateCellSize();
@@ -413,7 +407,7 @@ useEffect(() => {
         <div
           ref={gameAreaRef}
           tabIndex="0"
-          className="relative focus:outline-none overflow-hidden touch-none mx-auto w-full"
+          className="relative focus:outline-none overflow-hidden touch-none mx-auto"
           style={{
             touchAction: 'none',
             background: '#222',
@@ -423,12 +417,13 @@ useEffect(() => {
             alignItems: 'center',
             justifyContent: 'center',
             padding: 0,
-            aspectRatio: '1/1',
-            width: '100%',
-            maxWidth: 360, // o el valor que prefieras para desktop
+            width: cellSize * GRID_SIZE,
+            height: cellSize * GRID_SIZE,
             border: currentTheme.boardBorder,
             overflow: 'hidden',
-            boxSizing: 'border-box',
+            boxSizing: 'content-box', // importante para que el tamaño sea exacto
+            maxWidth: '100vw', // nunca más grande que la pantalla
+            maxHeight: '80vw', // nunca más alto que la pantalla
           }}
           onTouchStart={handleTouchStart}
           onTouchMove={handleTouchMove}
