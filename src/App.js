@@ -327,8 +327,14 @@ useEffect(() => {
 
   useEffect(() => {
     const updateCellSize = () => {
-      // El ancho máximo disponible
-      const maxBoardPx = Math.min(window.innerWidth, 440) - 32; // 440 = maxWidth del contenedor, 32 = padding
+      // El ancho máximo disponible es el del contenedor padre (440px menos padding)
+      const container = gameAreaRef.current?.parentElement;
+      let maxBoardPx = 440; // valor por defecto
+      if (container) {
+        maxBoardPx = container.offsetWidth - 32; // 32 = padding horizontal del card
+      } else {
+        maxBoardPx = Math.min(window.innerWidth, 440) - 32;
+      }
       const newCellSize = Math.floor(maxBoardPx / GRID_SIZE);
       setCellSize(Math.max(12, Math.min(newCellSize, 32)));
     };
@@ -421,9 +427,9 @@ useEffect(() => {
             height: cellSize * GRID_SIZE,
             border: currentTheme.boardBorder,
             overflow: 'hidden',
-            boxSizing: 'content-box', // importante para que el tamaño sea exacto
-            maxWidth: '100vw', // nunca más grande que la pantalla
-            maxHeight: '80vw', // nunca más alto que la pantalla
+            boxSizing: 'content-box',
+            maxWidth: '100vw',
+            maxHeight: '80vw',
           }}
           onTouchStart={handleTouchStart}
           onTouchMove={handleTouchMove}
