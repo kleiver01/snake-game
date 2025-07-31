@@ -1,19 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
-const GameBoard = ({ board = [], gridSize = 20, boardBorder = 'border-gray-300', boardBg = 'bg-gray-50', snakeColor = 'bg-green-500', foodColors = {} }) => {
-  const [cellSize, setCellSize] = useState(20);
-
-  useEffect(() => {
-    const updateCellSize = () => {
-      const boardPx = Math.min(window.innerWidth, 440) - 32; // 440 = maxWidth del contenedor, 32 = padding
-      const newCellSize = Math.floor(boardPx / gridSize);
-      setCellSize(Math.max(12, Math.min(newCellSize, 32)));
-    };
-    updateCellSize();
-    window.addEventListener('resize', updateCellSize);
-    return () => window.removeEventListener('resize', updateCellSize);
-  }, [gridSize]);
-
+const GameBoard = ({ board = [], gridSize = 20, cellSize = 20, boardBorder = 'border-gray-300', boardBg = 'bg-gray-50', snakeColor = 'bg-green-500', foodColors = {} }) => {
   return (
     <div
       className="relative"
@@ -34,7 +21,6 @@ const GameBoard = ({ board = [], gridSize = 20, boardBorder = 'border-gray-300',
 
           if (cell === 'snake-head') {
             cellClasses = `${snakeColor} rounded-sm relative`;
-            // Ojo de la serpiente xd
             return (
               <div
                 key={`${rowIndex}-${colIndex}`}
@@ -52,7 +38,7 @@ const GameBoard = ({ board = [], gridSize = 20, boardBorder = 'border-gray-300',
             );
           } else if (cell === 'snake') {
             cellClasses = `${snakeColor} rounded-sm`;
-          } else if (foodColors[cell]) { // Si la celda es un tipo de comida
+          } else if (foodColors[cell]) {
             foodSpecificClass = `${foodColors[cell].color} rounded-full animate-pulse`;
             cellClasses = foodSpecificClass;
           }

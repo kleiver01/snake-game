@@ -327,13 +327,18 @@ useEffect(() => {
 
   useEffect(() => {
     const updateCellSize = () => {
-      // El ancho máximo disponible es el del contenedor padre (440px menos padding)
       const container = gameAreaRef.current?.parentElement;
-      let maxBoardPx = 440; // valor por defecto
+      let maxBoardPx = 440;
       if (container) {
-        maxBoardPx = container.offsetWidth - 32; // 32 = padding horizontal del card
+        // Border: 16px (8px a cada lado), Padding: 0 en móvil, 32px a cada lado en sm
+        const style = window.getComputedStyle(container);
+        const paddingLeft = parseInt(style.paddingLeft) || 0;
+        const paddingRight = parseInt(style.paddingRight) || 0;
+        const borderLeft = parseInt(style.borderLeftWidth) || 0;
+        const borderRight = parseInt(style.borderRightWidth) || 0;
+        maxBoardPx = container.offsetWidth - paddingLeft - paddingRight - borderLeft - borderRight;
       } else {
-        maxBoardPx = Math.min(window.innerWidth, 440) - 32;
+        maxBoardPx = Math.min(window.innerWidth, 440) - 32; // fallback
       }
       const newCellSize = Math.floor(maxBoardPx / GRID_SIZE);
       setCellSize(Math.max(12, Math.min(newCellSize, 32)));
@@ -344,16 +349,16 @@ useEffect(() => {
   }, []);
 
   return (
-    <div className={`min-h-screen flex items-center justify-center p-0 sm:p-4 ${currentTheme.bg} transition-colors duration-300`}>
+    <div className={`min-h-screen flex items-center justify-center py-4 sm:p-8 ${currentTheme.bg} transition-colors duration-300`}>
       <div
-        className={`p-4 sm:p-8 rounded-3xl shadow-2xl border-8 border-gray-700 flex flex-col items-center bg-gray-200`}
-        style={{
-          maxWidth: 440, // Cambia aquí (prueba 420, 440, 460 o 480)
-          width: '100%',
-          boxSizing: 'border-box',
-          background: '#e5e7eb',
-        }}
-      >
+  className={`pt-4 pb-8 sm:p-8 rounded-3xl shadow-2xl border-8 border-gray-700 flex flex-col items-center bg-gray-200`}
+  style={{
+    maxWidth: 440,
+    width: '100%',
+    boxSizing: 'border-box',
+    background: '#e5e7eb',
+  }}
+>
         <div className="w-full flex justify-between items-center mb-4">
           <button
             onClick={toggleTheme}
@@ -418,7 +423,6 @@ useEffect(() => {
             touchAction: 'none',
             background: '#222',
             borderRadius: 16,
-            margin: '0 auto',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -428,8 +432,6 @@ useEffect(() => {
             border: currentTheme.boardBorder,
             overflow: 'hidden',
             boxSizing: 'content-box',
-            maxWidth: '100vw',
-            maxHeight: '80vw',
           }}
           onTouchStart={handleTouchStart}
           onTouchMove={handleTouchMove}
