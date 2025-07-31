@@ -421,6 +421,8 @@ useEffect(() => {
             height: cellSize * GRID_SIZE,
             border: currentTheme.boardBorder,
             overflow: 'hidden',
+            maxWidth: '100vw',           // <-- Agrega esto
+            boxSizing: 'border-box',     // <-- Y esto
           }}
           onTouchStart={handleTouchStart}
           onTouchMove={handleTouchMove}
