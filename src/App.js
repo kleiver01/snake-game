@@ -338,7 +338,7 @@ useEffect(() => {
   }, []);
 
   return (
-    <div className={`min-h-screen flex items-center justify-center p-4 ${currentTheme.bg} transition-colors duration-300`}>
+    <div className={`min-h-screen flex items-center justify-center p-1 sm:p-4 ${currentTheme.bg} transition-colors duration-300`}>
       <div
         className={`p-4 sm:p-8 rounded-3xl shadow-2xl border-8 border-gray-700 flex flex-col items-center bg-gray-200`}
         style={{
@@ -421,8 +421,8 @@ useEffect(() => {
             height: cellSize * GRID_SIZE,
             border: currentTheme.boardBorder,
             overflow: 'hidden',
-            maxWidth: '100vw',           // <-- Agrega esto
-            boxSizing: 'border-box',     // <-- Y esto
+            maxWidth: '100vw',           
+            boxSizing: 'border-box',     
           }}
           onTouchStart={handleTouchStart}
           onTouchMove={handleTouchMove}
