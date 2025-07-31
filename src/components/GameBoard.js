@@ -16,8 +16,10 @@ const GameBoard = ({ board = [], gridSize = 20, boardBorder = 'border-gray-300',
 
   return (
     <div
-      className="relative w-full h-full"
+      className="relative"
       style={{
+        width: '100%',
+        height: '100%',
         background: boardBg,
         border: boardBorder,
         borderRadius: 16,

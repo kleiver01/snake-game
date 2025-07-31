@@ -327,9 +327,15 @@ useEffect(() => {
 
   useEffect(() => {
     const updateCellSize = () => {
-      // El área máxima debe ser igual al tamaño máximo que quieres para el tablero
-      const maxBoardPx = 360; // O el valor que prefieras
-      const newCellSize = Math.floor(maxBoardPx / GRID_SIZE);
+      // Usa el ancho real del contenedor padre
+      const boardContainer = gameAreaRef.current;
+      let boardPx = 360;
+      if (boardContainer) {
+        boardPx = boardContainer.offsetWidth;
+      } else {
+        boardPx = Math.min(window.innerWidth, 360);
+      }
+      const newCellSize = Math.floor(boardPx / GRID_SIZE);
       setCellSize(Math.max(12, Math.min(newCellSize, 32)));
     };
     updateCellSize();
@@ -338,7 +344,7 @@ useEffect(() => {
   }, []);
 
   return (
-    <div className={`min-h-screen flex items-center justify-center p-1 sm:p-4 ${currentTheme.bg} transition-colors duration-300`}>
+    <div className={`min-h-screen flex items-center justify-center p-0 sm:p-4 ${currentTheme.bg} transition-colors duration-300`}>
       <div
         className={`p-4 sm:p-8 rounded-3xl shadow-2xl border-8 border-gray-700 flex flex-col items-center bg-gray-200`}
         style={{
@@ -417,9 +423,9 @@ useEffect(() => {
             alignItems: 'center',
             justifyContent: 'center',
             padding: 0,
-            aspectRatio: '1/1', // Hace el cuadro siempre cuadrado
-            maxWidth: '100vw',  // Nunca más ancho que la pantalla
-            maxHeight: '80vw',  // Opcional: limita el alto en móvil
+            aspectRatio: '1/1',
+            width: '100%',
+            maxWidth: 360, // o el valor que prefieras para desktop
             border: currentTheme.boardBorder,
             overflow: 'hidden',
             boxSizing: 'border-box',
